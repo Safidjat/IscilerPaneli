@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme{
+    --color-dark:#41252F;
+    --color-darker:#27161C;
+    --color-light:#ffd6b73d;
+    --breakpoint-mid: 380px;
+    --breakpoint-desk: 770px;
+    --breakpoint-desk1: 1285px;
+    --breakpoint-desk2: 1095px;
+    --shadow-herTerefli: 0 0 10px #27161C;
+    --shadow-herTerefliLil: 0 0 3px #27161C;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#scr::-webkit-scrollbar{
+    height: 0;
+    width: 0;
+}
