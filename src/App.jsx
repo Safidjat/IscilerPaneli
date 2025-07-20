@@ -296,3 +296,235 @@ function App() {
 }
 
 export default App
+
+
+
+
+
+
+
+
+
+
+
+
+// import { useState, useMemo } from "react";
+
+// Выносим исходные данные за пределы компонента, так как они не меняются.
+// const initialArr = [
+//   ...
+// ];
+
+// const DEFAULT_SAHA_OPTION = 'Sahə seç';
+// const RESET_SAHA_OPTION = 'Söndür';
+
+// function App() {
+//   const [employees, setEmployees] = useState(initialArr);
+//   const [filters, setFilters] = useState({
+//     searchTerm: '',
+//     sortBySalary: null, // null, 'asc', 'desc'
+//     ageRange: null,     // null, '18-25', '26-30', '31+'
+//     field: DEFAULT_SAHA_OPTION,
+//     showMostExperienced: false,
+//     showRandom: false,
+//   });
+
+//   const [newEmployee, setNewEmployee] = useState({
+//     ad: '', soyad: '', maas: '', yas: '', staj: '', saha: ''
+//   });
+  
+//   const saheler = useMemo(() => {
+//     const uniqueSaheler = new Set(initialArr.map(item => item.saha));
+//     return [DEFAULT_SAHA_OPTION, RESET_SAHA_OPTION, ...uniqueSaheler];
+//   }, []);
+
+//   const displayedEmployees = useMemo(() => {
+//     let filtered = [...employees];
+
+//     if (filters.searchTerm) {
+//       const lowercasedTerm = filters.searchTerm.toLocaleLowerCase('az-AZ');
+//       filtered = filtered.filter(item =>
+//         item.ad.toLocaleLowerCase('az-AZ').startsWith(lowercasedTerm) ||
+//         item.soyad.toLocaleLowerCase('az-AZ').startsWith(lowercasedTerm)
+//       );
+//     }
+
+//     if (filters.field !== DEFAULT_SAHA_OPTION && filters.field !== RESET_SAHA_OPTION) {
+//       filtered = filtered.filter(item => item.saha === filters.field);
+//     }
+
+//     if (filters.ageRange) {
+//       switch (filters.ageRange) {
+//         case '18-25': filtered = filtered.filter(item => item.yas <= 25); break;
+//         case '26-30': filtered = filtered.filter(item => item.yas >= 26 && item.yas <= 30); break;
+//         case '31+': filtered = filtered.filter(item => item.yas >= 31); break;
+//         default: break;
+//       }
+//     }
+    
+//     if (filters.showMostExperienced) {
+//       if (filtered.length > 0) {
+//         const maxStaj = Math.max(...filtered.map(item => item.staj));
+//         filtered = filtered.filter(item => item.staj === maxStaj);
+//       }
+//     }
+
+//     if (filters.sortBySalary) {
+//       filtered.sort((a, b) => 
+//         filters.sortBySalary === 'asc' ? a.maas - b.maas : b.maas - a.maas
+//       );
+//     }
+    
+//     if (filters.showRandom) {
+//       if (filtered.length > 0) {
+//         const randomIndex = Math.floor(Math.random() * filtered.length);
+//         return [filtered[randomIndex]];
+//       }
+//       return [];
+//     }
+
+//     return filtered;
+//   }, [employees, filters]);
+
+//   const handleSearchChange = (e) => {
+//     setFilters({ ...filters, searchTerm: e.target.value });
+//   };
+
+//   const handleSalarySort = (direction) => {
+//     const newSort = filters.sortBySalary === direction ? null : direction;
+//     setFilters({ ...filters, sortBySalary: newSort, showRandom: false });
+//   };
+
+//   const handleAgeFilter = (range) => {
+//     const newRange = filters.ageRange === range ? null : range;
+//     setFilters({ ...filters, ageRange: newRange });
+//   };
+  
+//   const handleFieldChange = (e) => {
+//     const value = e.target.value;
+//     if (value === RESET_SAHA_OPTION) {
+//         setFilters({ ...filters, field: DEFAULT_SAHA_OPTION });
+//     } else {
+//         setFilters({ ...filters, field: value });
+//     }
+//   };
+
+//   const handleShowMostExperienced = () => {
+//     setFilters({ ...filters, showMostExperienced: !filters.showMostExperienced, showRandom: false });
+//   };
+  
+//   const handleShowRandom = () => {
+//     if (!filters.showRandom) {
+//       setFilters({ ...filters, showRandom: true, sortBySalary: null, showMostExperienced: false });
+//     } else {
+//       setFilters({ ...filters, showRandom: false });
+//     }
+//   };
+  
+//   const handleNewEmployeeInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setNewEmployee({ ...newEmployee, [name]: value });
+//   };
+
+//   const handleAddEmployee = () => {
+//     if (Object.values(newEmployee).some(val => val === '')) {
+//       alert('Zəhmət olmasa bütün xanaları doldurun.');
+//       return;
+//     }
+//     const employeeToAdd = {
+//         ...newEmployee,
+//         maas: Number(newEmployee.maas),
+//         yas: Number(newEmployee.yas),
+//         staj: Number(newEmployee.staj),
+//     };
+//     setEmployees([employeeToAdd, ...employees]);
+//     setNewEmployee({ ad: '', soyad: '', maas: '', yas: '', staj: '', saha: '' });
+//   };
+
+//   return (
+//     <div className='w-[95%] m-auto! bg-light h-[95%] flex flex-col gap-[10px] text-dark border border-darker rounded-[10px] shadow-dark p-[15px]!'>
+//       <h1 className="font-[600] text-[30px] ">İşçilər Paneli</h1>
+//       <div className="flex flex-col desk:flex-row h-full gap-[20px]">
+//         <div className="desk1:w-[45%] desk:w-[50%] w-full flex flex-col gap-[10px]">
+//           <div id="axtaris" className="w-full flex flex-col gap-[10px]">
+//             <h1 className="font-[500] text-[20px]">Ad/Soyad ilə axtarış et</h1>
+//             <input 
+//               value={filters.searchTerm}
+//               onChange={handleSearchChange}
+//               type="text" className="bg-white outline-none p-[5px]! rounded-[6px] shadow-herTerefliLil" />
+//           </div>
+//           <div id="filtrlar" className="w-full flex flex-col gap-[10px]">
+//             <h1 className="font-[500] text-[20px]">Filtr</h1>
+//             <div className="max-mid:flex-col max-mid:gap-[20px] shadow-herTerefliLil bg-white rounded-[15px] flex justify-between p-[10px]!">
+//               <div className="flex items-start flex-col gap-[10px]">
+//                 <div className="flex items-center gap-[20px]">
+//                   <button onClick={() => handleSalarySort('asc')} className={`${filters.sortBySalary === 'asc' ? "text-white bg-darker" : "text-darker bg-white"} cursor-pointer py-[5px]! px-[15px]! border-darker border-[2px] rounded-[10px] font-bold text-[16px] text-nowrap transition-all duration-200 ease-in-out hover:shadow-herTerefliLil hover:scale-[1.01] desk:max-desk1:px-[8px]!`}>A-Z</button>
+//                   <button onClick={() => handleSalarySort('desc')} className={`${filters.sortBySalary === 'desc' ? "text-white bg-darker" : "text-darker bg-white"} cursor-pointer py-[5px]! px-[15px]! border-darker border-[2px] rounded-[10px] font-bold text-[16px] text-nowrap transition-all duration-200 ease-in-out hover:shadow-herTerefliLil hover:scale-[1.01] desk:max-desk1:px-[8px]!`}>Z-A</button>
+//                 </div>
+//                 <div className="flex flex-wrap items-center gap-[20px]">
+//                   <button onClick={() => handleAgeFilter('18-25')} className={`${filters.ageRange === '18-25' ? "text-white bg-darker" : "text-darker bg-white"} cursor-pointer py-[5px]! px-[15px]! border-darker border-[2px] rounded-[10px] font-bold text-[16px] text-nowrap transition-all duration-200 ease-in-out hover:shadow-herTerefliLil hover:scale-[1.01] desk:max-desk1:px-[8px]!`}>18-25</button>
+//                   <button onClick={() => handleAgeFilter('26-30')} className={`${filters.ageRange === '26-30' ? "text-white bg-darker" : "text-darker bg-white"} cursor-pointer py-[5px]! px-[15px]! border-darker border-[2px] rounded-[10px] font-bold text-[16px] text-nowrap transition-all duration-200 ease-in-out hover:shadow-herTerefliLil hover:scale-[1.01] desk:max-desk1:px-[8px]!`}>26-30</button>
+//                   <button onClick={() => handleAgeFilter('31+')} className={`${filters.ageRange === '31+' ? "text-white bg-darker" : "text-darker bg-white"} cursor-pointer py-[5px]! px-[15px]! border-darker border-[2px] rounded-[10px] font-bold text-[16px] text-nowrap transition-all duration-200 ease-in-out hover:shadow-herTerefliLil hover:scale-[1.01] desk:max-desk1:px-[8px]!`}>31+</button>
+//                 </div>
+//                 <div className="flex items-center gap-[20px] max-desk1:items-start max-desk1:flex-col">
+//                   <button onClick={handleShowMostExperienced} className={`${filters.showMostExperienced ? "text-white bg-darker" : "text-darker bg-white"} cursor-pointer py-[5px]! px-[15px]! border-darker border-[2px] rounded-[10px] font-bold text-[16px] text-nowrap transition-all duration-200 ease-in-out hover:shadow-herTerefliLil hover:scale-[1.01]`}>Ən təcrübəlini göstər</button>
+//                   <button onClick={handleShowRandom} className={`${filters.showRandom ? "text-white bg-darker" : "text-darker bg-white"} cursor-pointer py-[5px]! px-[15px]! border-darker border-[2px] rounded-[10px] font-bold text-[16px] text-nowrap transition-all duration-200 ease-in-out hover:shadow-herTerefliLil hover:scale-[1.01]`}>Random birini göstər</button>
+//                 </div>
+//               </div>
+//               <div className="self-start">
+//                 <select
+//                   value={filters.field}
+//                   onChange={handleFieldChange}
+//                   className="outline-none z-2 p-[10px]! border-[2px] rounded-[10px] transition-all duration-200 ease-in-out hover:shadow-herTerefliLil hover:scale-[1.01] cursor-pointer">
+//                     {
+//                       saheler.map((item,i)=> i==0 ? <option key={i} disabled>{item}</option> : <option key={i}>{item}</option>)
+//                     }
+//                 </select>
+//               </div>
+//             </div>
+//           </div>
+//           <div id="elaveEt" className="w-full flex flex-col gap-[10px]">
+//             <h1 className="font-[500] text-[20px]">Yeni işçi elavə et</h1>
+//             <div className="flex flex-col items-center gap-[15px] max-desk2:p-[10px]! p-[20px]! shadow-herTerefliLil bg-white rounded-[15px]">
+//               <div className="flex flex-wrap justify-center gap-[10px] items-center">
+//                   <input name="ad" value={newEmployee.ad} onChange={handleNewEmployeeInputChange} placeholder="Ad" type="text" className="max-w-[100px] bg-white outline-none p-[2px]! rounded-[6px] shadow-herTerefliLil" />
+//                   <input name="soyad" value={newEmployee.soyad} onChange={handleNewEmployeeInputChange} placeholder="Soyad" type="text" className="max-w-[100px] bg-white outline-none p-[2px]! rounded-[6px] shadow-herTerefliLil" />
+//                   <input name="maas" value={newEmployee.maas} onChange={handleNewEmployeeInputChange} placeholder="Maaş" type="number" className="max-w-[100px] bg-white outline-none p-[2px]! rounded-[6px] shadow-herTerefliLil" />
+//                   <input name="yas" value={newEmployee.yas} onChange={handleNewEmployeeInputChange} placeholder="Yaş" type="number" className="max-w-[100px] bg-white outline-none p-[2px]! rounded-[6px] shadow-herTerefliLil" />
+//                   <input name="staj" value={newEmployee.staj} onChange={handleNewEmployeeInputChange} placeholder="Staj" type="number" className="max-w-[100px] bg-white outline-none p-[2px]! rounded-[6px] shadow-herTerefliLil" />
+//                   <input name="saha" value={newEmployee.saha} onChange={handleNewEmployeeInputChange} placeholder="Sahə" type="text" className="max-w-[100px] bg-white outline-none p-[2px]! rounded-[6px] shadow-herTerefliLil" />
+//               </div>
+//               <button onClick={handleAddEmployee} className={`hover:bg-darker hover:text-white cursor-pointer py-[5px]! px-[15px]! border-darker border-[2px] rounded-[10px] font-bold text-[16px] text-nowrap transition-all duration-200 ease-in-out hover:shadow-herTerefliLil hover:scale-[1.01] desk:max-desk1:px-[8px]!`}>Əlavə et</button>
+//             </div>
+//           </div>
+//         </div>
+//         <div id="siyahi" className="overflow-hidden flex flex-col gap-[10px] items-center desk1:w-[55%] desk:w-[50%] w-full rounded-[15px] shadow-herTerefli h-full bg-white">
+//             <div className="w-full text-white bg-dark flex items-center justify-between">
+//               <h1 className="w-[16.6%] text-[14px] text-center font-[600]">Ad</h1>
+//               <h1 className="w-[16.6%] text-[14px] text-center font-[600]">Soyad</h1>
+//               <h1 className="w-[16.6%] text-[14px] text-center font-[600]">Maaş</h1>
+//               <h1 className="w-[16.6%] text-[14px] text-center font-[600]">Yaş</h1>
+//               <h1 className="w-[16.6%] text-[14px] text-center font-[600]">Staj</h1>
+//               <h1 className="w-[16.6%] text-[14px] text-center font-[600]">Sahə</h1>
+//             </div>
+//             <div id="scr" className="w-full flex flex-col max-h-[75vh] overflow-y-auto">
+//                 {
+//                   displayedEmployees.map((item,i)=>{
+//                     return <div key={i} className="w-full text-[12px] border-b font-[600] flex items-center justify-between py-[5px]!">
+//                               <h1 className="w-[16.6%] text-wrap text-center">{item.ad}</h1>
+//                               <h1 className="w-[16.6%] text-wrap text-center">{item.soyad}</h1>
+//                               <h1 className="w-[16.6%] text-wrap text-center">{item.maas} AZN</h1>
+//                               <h1 className="w-[16.6%] text-wrap text-center">{item.yas}</h1>
+//                               <h1 className="w-[16.6%] text-wrap text-center">{item.staj} il</h1>
+//                               <h1 className="w-[16.6%] text-wrap text-center">{item.saha}</h1>
+//                             </div>
+//                   })
+//                 }
+//             </div>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default App;
